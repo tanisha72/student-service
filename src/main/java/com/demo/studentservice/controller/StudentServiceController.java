@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.demo.studentservice.constants.ApplicationConstants;
 import com.demo.studentservice.entity.Student;
 import com.demo.studentservice.external.HelloWorldClient;
 import com.demo.studentservice.model.StudentDetails;
@@ -41,8 +42,8 @@ public class StudentServiceController {
 
 	@GetMapping("/students")
 	public ResponseEntity<StudentResponseBody> retrieveAllStudents() {
-		return ResponseEntity.ok(
-				StudentResponseBody.builder().studentList(studentService.retrieveStudents()).status("SUCCESS").build());
+		return ResponseEntity.ok(StudentResponseBody.builder().studentList(studentService.retrieveStudents())
+				.status(ApplicationConstants.SUCCESS).build());
 	}
 
 	@PostMapping("/students")
@@ -52,35 +53,38 @@ public class StudentServiceController {
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{rollNo}")
 				.buildAndExpand(student.getRollNo()).toUri();
 
-		return ResponseEntity.created(location).body(StudentResponseBody.builder().status("SUCCESS").build());
+		return ResponseEntity.created(location)
+				.body(StudentResponseBody.builder().status(ApplicationConstants.SUCCESS).build());
 	}
 
-	@GetMapping("/students/{course}")
+	@GetMapping("/students/course/{course}")
 	public ResponseEntity<StudentResponseBody> retrieveStudentsByCourse(@PathVariable String course) {
-		return ResponseEntity.ok(StudentResponseBody.builder()
-				.studentList(studentService.retrieveStudentsByCourse(course)).status("SUCCESS").build());
+		return ResponseEntity
+				.ok(StudentResponseBody.builder().studentList(studentService.retrieveStudentsByCourse(course))
+						.status(ApplicationConstants.SUCCESS).build());
 
 	}
 
 	@GetMapping("/students/{rollNo}")
 	public ResponseEntity<StudentResponseBody> retrieveStudentByRollNo(@PathVariable int rollNo) {
-
 		List<StudentDetails> list = new ArrayList<>();
 		list.add(studentService.retrieveStudentByRollNo(rollNo));
-		return ResponseEntity.ok(StudentResponseBody.builder().status("SUCCESS").studentList(list).build());
+		return ResponseEntity
+				.ok(StudentResponseBody.builder().status(ApplicationConstants.SUCCESS).studentList(list).build());
 	}
 
 	@DeleteMapping("/students/{rollNo}")
 	public ResponseEntity<StudentResponseBody> deleteStudentByRollNo(@PathVariable int rollNo) {
 		studentService.deleteStudentByRollNo(rollNo);
-		return ResponseEntity.ok(StudentResponseBody.builder().status("SUCCESS").build());
+		return ResponseEntity.ok(StudentResponseBody.builder().status(ApplicationConstants.SUCCESS).build());
 	}
 
 	@PutMapping("/students")
 	public ResponseEntity<StudentResponseBody> updateStudent(@RequestBody StudentRequestBody request) {
 		List<StudentDetails> list = new ArrayList<>();
 		list.add(studentService.updateStudent(request));
-		return ResponseEntity.ok(StudentResponseBody.builder().status("SUCCESS").studentList(list).build());
+		return ResponseEntity
+				.ok(StudentResponseBody.builder().status(ApplicationConstants.SUCCESS).studentList(list).build());
 	}
 
 	@GetMapping("students/greetStudent/{firstName}")

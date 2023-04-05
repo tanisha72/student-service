@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import com.demo.studentservice.constants.ApplicationConstants;
 import com.demo.studentservice.exception.InexistentRollNoException;
 import com.demo.studentservice.exception.NoStudentsFoundException;
 import com.demo.studentservice.model.ErrorDetails;
@@ -25,20 +26,25 @@ public class StudentServiceExceptionHandler extends ResponseEntityExceptionHandl
 
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<ErrorDetails> handleOtherExceptions(Exception e) {
-		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ErrorDetails.builder().status("Failed")
-				.message("Unable to perform this operation at the moment").timeStamp(LocalDateTime.now()).build());
+		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+				.body(ErrorDetails.builder().status(ApplicationConstants.FAILURE)
+						.message("Unable to perform this operation at the moment").timeStamp(LocalDateTime.now())
+						.build());
 	}
 
 	@ExceptionHandler(NoStudentsFoundException.class)
 	public ResponseEntity<ErrorDetails> handleNoStudentsFoundException(NoStudentsFoundException e) {
-		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ErrorDetails.builder().status("Failed")
-				.message("No student data present in system").timeStamp(LocalDateTime.now()).build());
+		return ResponseEntity.status(HttpStatus.NOT_FOUND)
+				.body(ErrorDetails.builder().status(ApplicationConstants.FAILURE)
+						.message("No student data present in system").timeStamp(LocalDateTime.now()).build());
 	}
 
 	@ExceptionHandler(InexistentRollNoException.class)
 	public ResponseEntity<ErrorDetails> handleInexistentRollNoException(InexistentRollNoException e) {
-		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ErrorDetails.builder().status("Failed")
-				.message("No student data present in system for given roll no").timeStamp(LocalDateTime.now()).build());
+		return ResponseEntity.status(HttpStatus.NOT_FOUND)
+				.body(ErrorDetails.builder().status(ApplicationConstants.FAILURE)
+						.message("No student data present in system for given roll no").timeStamp(LocalDateTime.now())
+						.build());
 	}
 
 }

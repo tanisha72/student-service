@@ -20,6 +20,7 @@ import com.demo.studentservice.repository.StudentRepository;
  * @author tanisha gupta
  *
  */
+
 @Service
 public class ManageStudentService {
 
