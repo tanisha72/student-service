@@ -40,11 +40,20 @@ public class StudentServiceController {
 	@Autowired
 	HelloWorldClient helloWorldClient;
 
+	/*
+	 * Method for getting list of all students
+	 */
+
 	@GetMapping("/students")
 	public ResponseEntity<StudentResponseBody> retrieveAllStudents() {
 		return ResponseEntity.ok(StudentResponseBody.builder().studentList(studentService.retrieveStudents())
 				.status(ApplicationConstants.SUCCESS).build());
 	}
+
+	/*
+	 * Method for inserting data into database for a new student
+	 * 
+	 */
 
 	@PostMapping("/students")
 	public ResponseEntity<StudentResponseBody> createStudent(@RequestBody StudentRequestBody request) {
@@ -57,6 +66,9 @@ public class StudentServiceController {
 				.body(StudentResponseBody.builder().status(ApplicationConstants.SUCCESS).build());
 	}
 
+	/*
+	 * Retrieves list of all students enrolled for a particular course
+	 */
 	@GetMapping("/students/course/{course}")
 	public ResponseEntity<StudentResponseBody> retrieveStudentsByCourse(@PathVariable String course) {
 		return ResponseEntity
@@ -65,6 +77,9 @@ public class StudentServiceController {
 
 	}
 
+	/*
+	 * Retrieves student data corresponding to a specific Roll no
+	 */
 	@GetMapping("/students/{rollNo}")
 	public ResponseEntity<StudentResponseBody> retrieveStudentByRollNo(@PathVariable int rollNo) {
 		List<StudentDetails> list = new ArrayList<>();
@@ -73,12 +88,18 @@ public class StudentServiceController {
 				.ok(StudentResponseBody.builder().status(ApplicationConstants.SUCCESS).studentList(list).build());
 	}
 
+	/*
+	 * Deletes data from database for the roll no provided
+	 */
 	@DeleteMapping("/students/{rollNo}")
 	public ResponseEntity<StudentResponseBody> deleteStudentByRollNo(@PathVariable int rollNo) {
 		studentService.deleteStudentByRollNo(rollNo);
 		return ResponseEntity.ok(StudentResponseBody.builder().status(ApplicationConstants.SUCCESS).build());
 	}
 
+	/*
+	 * Updates student data in database
+	 */
 	@PutMapping("/students")
 	public ResponseEntity<StudentResponseBody> updateStudent(@RequestBody StudentRequestBody request) {
 		List<StudentDetails> list = new ArrayList<>();
@@ -87,6 +108,9 @@ public class StudentServiceController {
 				.ok(StudentResponseBody.builder().status(ApplicationConstants.SUCCESS).studentList(list).build());
 	}
 
+	/*
+	 * Calls /hello-world API with student name
+	 */
 	@GetMapping("students/greetStudent/{firstName}")
 	public ResponseEntity<String> greetStudent(@PathVariable String firstName) {
 		return helloWorldClient.sayHello(firstName);

@@ -17,7 +17,8 @@ import com.demo.studentservice.model.StudentRequestBody;
 import com.demo.studentservice.repository.StudentRepository;
 
 /**
- * @author tanisha gupta
+ * @author tanisha gupta .This class interacts with the database for CRUD
+ *         operations
  *
  */
 
@@ -27,6 +28,9 @@ public class ManageStudentService {
 	@Autowired
 	StudentRepository studentRepo;
 
+	/*
+	 * Fetches list of all students in database
+	 */
 	public List<StudentDetails> retrieveStudents() {
 		List<Student> studentList = studentRepo.findAll();
 		if (studentList.isEmpty()) {
@@ -41,6 +45,10 @@ public class ManageStudentService {
 		return studentDetailsList;
 	}
 
+	/*
+	 * Create a student record in database
+	 * 
+	 */
 	public Student createStudent(StudentRequestBody request) {
 
 		return studentRepo.save(Student.builder().firstName(request.getFirstName()).lastName(request.getLastName())
@@ -48,6 +56,10 @@ public class ManageStudentService {
 
 	}
 
+	/*
+	 * Retrieves list of all students from database, enrolled for a particular
+	 * course
+	 */
 	public List<StudentDetails> retrieveStudentsByCourse(String course) {
 		List<Student> studentList = studentRepo.findByCourse(course);
 		if (studentList.isEmpty()) {
@@ -62,6 +74,10 @@ public class ManageStudentService {
 		return studentDetailsList;
 	}
 
+	/*
+	 * Fetches student data corresponding to a roll no
+	 * 
+	 */
 	public StudentDetails retrieveStudentByRollNo(int rollNo) {
 		Student student = studentRepo.findByRollNo(rollNo);
 		if (student == null) {
@@ -71,6 +87,10 @@ public class ManageStudentService {
 				.course(student.getCourse()).rollNo(student.getRollNo()).build();
 	}
 
+	/*
+	 * Deletes student data from database
+	 * 
+	 */
 	public void deleteStudentByRollNo(int rollNo) {
 		Student student = studentRepo.findByRollNo(rollNo);
 		if (student == null) {
@@ -79,6 +99,10 @@ public class ManageStudentService {
 		studentRepo.deleteById(rollNo);
 	}
 
+	/*
+	 * Updates student data in database
+	 * 
+	 */
 	public StudentDetails updateStudent(StudentRequestBody request) {
 		Student student = studentRepo.findByFirstNameAndLastName(request.getFirstName(), request.getLastName());
 		if (student == null) {
